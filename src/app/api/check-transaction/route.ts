@@ -1,9 +1,9 @@
 import midtransClient from "midtrans-client";
+import prisma from "@/app/lib/prisma";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const orderId = searchParams.get("order_id");
-  console.log("Received request for order ID:", orderId);
 
   if (!orderId) {
     return new Response(JSON.stringify({ error: "Order ID is required" }), {
@@ -13,6 +13,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Get Midtrans status
     const snap = new midtransClient.Snap({
       isProduction: false,
       serverKey: process.env.MIDTRANS_SERVER_KEY!,
@@ -20,7 +21,20 @@ export async function GET(request: Request) {
 
     const transactionStatus = await snap.transaction.status(orderId);
 
-    return new Response(JSON.stringify(transactionStatus), {
+    // Get claimed status from database
+    const paymentRecord = await prisma.payment.findUnique({
+      where: {
+        orderId: orderId,
+      },
+    });
+
+    // Combine Midtrans status with claimed status from database
+    const responseData = {
+      ...transactionStatus,
+      claimed: paymentRecord?.claimed || false,
+    };
+
+    return new Response(JSON.stringify(responseData), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

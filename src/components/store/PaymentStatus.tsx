@@ -40,12 +40,16 @@ export default function PaymentStatus() {
 
   const orderId = searchParams.get("orderId");
 
+  const [isClaimed, setIsClaimed] = useState(false);
+
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     setUsername(storedUsername);
 
     const storedItems = localStorage.getItem("selectedItems");
-    if (storedItems) {
+    const storedOrderId = localStorage.getItem("orderId");
+
+    if (storedItems && storedOrderId) {
       setSelectedItems(JSON.parse(storedItems));
     }
 
@@ -61,6 +65,11 @@ export default function PaymentStatus() {
 
         const data = await response.json();
         setTransactionDetails(data);
+
+        // Check if the transaction is claimed from the database response
+        if (data.claimed === true) {
+          setIsClaimed(true);
+        }
 
         if (data.transaction_status === "settlement") {
           setStatus("Payment successful");
@@ -119,20 +128,29 @@ export default function PaymentStatus() {
       return false;
     }
   };
+
   const handleConfirmation = async () => {
     const rconSuccess = await executeRconCommand();
     if (rconSuccess) {
       try {
-        const response = await fetch(
-          `/api/remove-transaction?orderId=${orderId}`,
-          {
-            method: "POST",
-          }
-        );
+        const response = await fetch(`/api/remove-transaction`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: transactionDetails?.order_id, // Pastikan order_id ada
+            username,
+            items: selectedItems,
+          }),
+        });
 
         if (response.ok) {
+          // Hapus item dari localStorage di sisi klien
           localStorage.removeItem("selectedItems");
           localStorage.removeItem("orderId");
+
+          // Redirect ke halaman store
           router.push("/store");
         } else {
           throw new Error("Failed to remove transaction");
@@ -278,16 +296,24 @@ export default function PaymentStatus() {
         {/* Status-specific messages and actions */}
         {transactionDetails && (
           <>
-            {transactionDetails.transaction_status === "settlement" && (
-              <div className="mt-6">
-                <button
-                  onClick={handleConfirmation}
-                  className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                >
-                  Confirm and Claim Reward
-                </button>
-              </div>
-            )}
+            {transactionDetails.transaction_status === "settlement" &&
+              !isClaimed && (
+                <div className="mt-6">
+                  <button
+                    onClick={handleConfirmation}
+                    className="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                  >
+                    Confirm and Claim Reward
+                  </button>
+                </div>
+              )}
+
+            {transactionDetails.transaction_status === "settlement" &&
+              isClaimed && (
+                <p className="text-green-400 mt-4">
+                  You have already claimed your reward.
+                </p>
+              )}
 
             {transactionDetails.transaction_status === "pending" && (
               <p className="text-yellow-400 mt-4">
