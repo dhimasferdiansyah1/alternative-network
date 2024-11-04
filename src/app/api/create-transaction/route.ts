@@ -2,7 +2,7 @@
 
 import midtransClient from "midtrans-client";
 
-export const transactionStorage: {
+const transactionStorage: {
   [key: string]: {
     username: string;
     items: { id: string; price: number; quantity: number; name: string }[];
@@ -55,6 +55,9 @@ export async function POST(request: Request) {
   };
 
   console.log("Transaction parameters:", parameter); // Untuk debugging
+
+  // Simpan transaksi di storage
+  transactionStorage[orderId] = { username, items }; // Simpan nama item di sini
 
   try {
     const snap = new midtransClient.Snap({
