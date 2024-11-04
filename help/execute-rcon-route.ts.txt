@@ -1,0 +1,46 @@
+// app/api/execute-rcon/route.ts
+
+import { Rcon } from "rcon-client";
+
+export async function POST(request: Request) {
+  const { username, amount, name } = await request.json();
+
+  const rcon = new Rcon({
+    host: process.env.MINECRAFT_SERVER_IP!,
+    port: parseInt(process.env.MINECRAFT_SERVER_RCON_PORT!),
+    password: process.env.MINECRAFT_SERVER_RCON_PASSWORD!, // Perbaikan di sini
+  });
+
+  const command = `tellraw @a ["",{"text":"Uji coba pembayaran ","color":"light_purple"},{"text":"midtrans","color":"yellow"},{"text":" dengan ","color":"light_purple"},{"text":"rcon","color":"yellow"},{"text":" di","color":"light_purple"},{"text":" next js","color":"yellow"},{"text":" :","color":"light_purple"},{"text":"\\nPembelian "},{"text":"${amount}","color":"light_purple"},{"text":" ${name} "},{"text":"${username}","color":"light_purple"},{"text":" berhasil!","color":"green"},{"text":"\\n "}]`;
+
+  try {
+    await rcon.connect();
+    const response = await rcon.send(command);
+    await rcon.end();
+
+    console.log("RCON Response:", response);
+    // Assuming the response is a success message, you can modify this as needed
+    if (response.includes("success")) {
+      console.log("RCON command executed successfully:", response);
+    } else {
+      console.error("Failed to execute RCON command:", response);
+    }
+
+    return new Response(JSON.stringify({ success: true, response }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error executing RCON command:", error);
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: "Failed to execute RCON command",
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  }
+}
