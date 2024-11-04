@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { orderId, username, items } = body;
 
-  // Hitung total dari item_details menggunakan harga IDR langsung
+  // Hitung total dari item_details menggunakan harga IDR langsung s
   const itemDetailsTotal = items.reduce(
     (
       total: number,
