@@ -2,7 +2,7 @@
 
 import midtransClient from "midtrans-client";
 
-const transactionStorage: {
+export const transactionStorage: {
   [key: string]: {
     username: string;
     items: { id: string; price: number; quantity: number; name: string }[];
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { orderId, username, items } = body;
 
-  // Hitung total dari item_details menggunakan harga IDR langsung s
+  // Hitung total dari item_details menggunakan harga IDR langsung
   const itemDetailsTotal = items.reduce(
     (
       total: number,
@@ -46,7 +46,11 @@ export async function POST(request: Request) {
       first_name: username,
     },
     callbacks: {
-      finish: `${process.env.NEXT_PUBLIC_BASE_URL}/store/payment-status/${orderId}`,
+      finish: `${
+        process.env.NEXT_PUBLIC_BASE_URL
+      }/store/payment-status?orderId=${orderId}&username=${encodeURIComponent(
+        username
+      )}`,
     },
   };
 
