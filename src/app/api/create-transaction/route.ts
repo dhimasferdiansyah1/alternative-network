@@ -56,9 +56,6 @@ export async function POST(request: Request) {
 
   console.log("Transaction parameters:", parameter); // Untuk debugging
 
-  // Simpan transaksi di storage
-  transactionStorage[orderId] = { username, items }; // Simpan nama item di sini
-
   try {
     const snap = new midtransClient.Snap({
       isProduction: false,
