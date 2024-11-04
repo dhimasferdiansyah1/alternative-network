@@ -46,11 +46,7 @@ export async function POST(request: Request) {
       first_name: username,
     },
     callbacks: {
-      finish: `${
-        process.env.NEXT_PUBLIC_BASE_URL
-      }/store/payment-status?orderId=${orderId}&username=${encodeURIComponent(
-        username
-      )}`,
+      finish: `${process.env.NEXT_PUBLIC_BASE_URL}/store/payment-status/${orderId}`,
     },
   };
 

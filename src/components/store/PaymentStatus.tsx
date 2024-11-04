@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface TransactionDetails {
   order_id: string;
@@ -26,7 +26,11 @@ interface SelectedItem {
   name: string;
 }
 
-export default function PaymentStatus() {
+interface PaymentStatusProps {
+  orderId: string | null;
+}
+
+export default function PaymentStatus({ orderId }: PaymentStatusProps) {
   const [status, setStatus] = useState("");
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails | null>(null);
@@ -35,10 +39,45 @@ export default function PaymentStatus() {
   const [selectedItems, setSelectedItems] = useState<SelectedItem[] | null>(
     null
   );
-  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const orderId = searchParams.get("orderId");
+  const checkTransactionStatus = async () => {
+    if (!orderId) {
+      setLoading(false);
+      setStatus("Invalid order ID");
+      return false;
+    }
+
+    try {
+      const response = await fetch(
+        `/api/check-transaction?order_id=${orderId}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setTransactionDetails(data);
+
+      if (data.transaction_status === "settlement") {
+        setStatus("Payment successful");
+        return true;
+      } else if (data.transaction_status === "pending") {
+        setStatus("Payment pending");
+        return false;
+      } else {
+        setStatus("Payment failed");
+        return false;
+      }
+    } catch (error) {
+      console.error("Error fetching transaction details:", error);
+      setStatus("Error checking payment status");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -49,7 +88,24 @@ export default function PaymentStatus() {
       setSelectedItems(JSON.parse(storedItems));
     }
 
+    // Initial check
+    checkTransactionStatus();
+
+    // Set up polling every 3 seconds
+    const intervalId = setInterval(async () => {
+      const isComplete = await checkTransactionStatus();
+      if (isComplete) {
+        clearInterval(intervalId);
+      }
+    }, 3000);
+
     const fetchTransactionDetails = async () => {
+      if (!orderId) {
+        setLoading(false);
+        setStatus("Invalid order ID");
+        return;
+      }
+
       try {
         const response = await fetch(
           `/api/check-transaction?order_id=${orderId}`
@@ -77,12 +133,9 @@ export default function PaymentStatus() {
       }
     };
 
-    if (orderId) {
-      fetchTransactionDetails();
-    } else {
-      setLoading(false);
-      setStatus("Invalid order ID");
-    }
+    fetchTransactionDetails();
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, [orderId]);
 
   const executeRconCommand = async () => {
