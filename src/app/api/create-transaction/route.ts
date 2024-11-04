@@ -2,7 +2,7 @@
 
 import midtransClient from "midtrans-client";
 
-export const transactionStorage: {
+const transactionStorage: {
   [key: string]: {
     username: string;
     items: { id: string; price: number; quantity: number; name: string }[];
