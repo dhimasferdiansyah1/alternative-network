@@ -31,6 +31,7 @@ const Navbar: React.FC<StoreNavbarProps> = ({ onOpenLogin }) => {
   const pathname = usePathname();
   const isPrivacyPolicyPage = pathname === "/store/privacy-policy";
   const isPaymentStatusPage = pathname.startsWith("/store/payment-status");
+  const isHowToBuyPage = pathname.startsWith("/store/how-to-buy");
   const [isOpen, setIsOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -52,8 +53,10 @@ const Navbar: React.FC<StoreNavbarProps> = ({ onOpenLogin }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const showStoreLink = isPrivacyPolicyPage || isPaymentStatusPage;
-  const showOtherLinks = !isPrivacyPolicyPage && !isPaymentStatusPage;
+  const showStoreLink =
+    isPrivacyPolicyPage || isPaymentStatusPage || isHowToBuyPage;
+  const showOtherLinks =
+    !isPrivacyPolicyPage && !isPaymentStatusPage && !isHowToBuyPage;
 
   return (
     <>
