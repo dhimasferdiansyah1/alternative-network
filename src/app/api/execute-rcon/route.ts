@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   // Mengubah amount menjadi bilangan bulat
   const roundedAmount = Math.floor(parseFloat(amount));
 
-  const command = `tellraw dhimasz134x ["",{"text":"Pembelian","color":"gold"},{"text":" ${itemDetails} ","color":"yellow"},{"text":"oleh","color":"gold"},{"text":" ${username}","color":"yellow"},{"text":" sebesar","color":"gold"},{"text":" Rp. ${roundedAmount.toLocaleString(
+  const command = `tellraw @a ["",{"text":"Pembelian","color":"gold"},{"text":" ${itemDetails} ","color":"yellow"},{"text":"oleh","color":"gold"},{"text":" ${username}","color":"yellow"},{"text":" sebesar","color":"gold"},{"text":" Rp. ${roundedAmount.toLocaleString(
     "id-ID"
   )}","color":"white"},{"text":" berhasil!","color":"green"},{"text":"\\n "}]`;
 

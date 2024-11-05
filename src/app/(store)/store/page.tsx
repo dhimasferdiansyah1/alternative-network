@@ -283,7 +283,7 @@ export default function Store() {
             href="/store/how-to-buy"
             className="flex items-center gap-2 text-white bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded-md"
           >
-            Baca tahapan cara membeli <HelpCircle size={24} />
+            Baca tahapan cara membeli (Uji Coba) <HelpCircle size={24} />
           </Link>
 
           {/* Alt Coins Group */}
