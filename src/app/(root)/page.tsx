@@ -285,7 +285,7 @@ export default function LandingPage() {
                   <>
                     Enter{" "}
                     <span className="font-bold text-amber-400">
-                      playmc.alt-w.net
+                      play.alt-w.net
                     </span>{" "}
                     in the server address field and click &quot;Done&quot;.
                   </>
