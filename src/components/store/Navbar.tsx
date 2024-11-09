@@ -152,11 +152,9 @@ const Navbar: React.FC<StoreNavbarProps> = ({ onOpenLogin }) => {
               {...{ className: "md:hidden bg-neutral-900 rounded-md" }}
             >
               <div className="flex flex-col items-center space-y-4 py-4">
-                {isPrivacyPolicyPage && (
+                {showStoreLink && (
                   <Link
-                    onClick={() => {
-                      closeMenu();
-                    }}
+                    onClick={closeMenu}
                     href="/store"
                     className="flex items-center bg-amber-400 hover:brightness-105 duration-150 px-4 py-2 rounded text-neutral-900"
                   >
@@ -164,13 +162,11 @@ const Navbar: React.FC<StoreNavbarProps> = ({ onOpenLogin }) => {
                     Store
                   </Link>
                 )}
-                {!isPrivacyPolicyPage && (
+                {showOtherLinks && (
                   <>
                     {username ? (
                       <>
-                        <span className="text-white mr-4">
-                          Welcome, {username}
-                        </span>
+                        <span className="text-white">Welcome, {username}</span>
                         <button
                           onClick={handleLogout}
                           className="bg-red-500 flex gap-2 items-center text-white px-4 py-2 rounded-md hover:brightness-105 transition-colors duration-200"
