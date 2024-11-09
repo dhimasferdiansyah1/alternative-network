@@ -56,30 +56,24 @@ const Faq = ({ question, answer, delay }: FaqProps) => {
 const AccordionFaq = () => {
   const faqs = [
     {
-      question: "Is this cross-play server?",
-      answer: "Yes!",
-    },
-    {
-      question: "Lag?",
-      answer: "Of course not! we have a big ass server over here.",
-    },
-    {
-      question: "Do the server have donatur ranks?",
-      answer: "Yes we are!",
-    },
-    {
-      question: "Can I play with older version of Minecraft?",
-      answer: "Yes you are!",
-    },
-    {
-      question: "24/7?",
-      answer: "Ye no down!",
-    },
-    {
-      question:
-        "Will there be another gamemode like skyblock, oneblock or something?",
+      question: "What is the Alternative World Minecraft Server?",
       answer:
-        "Yes we currently working on oneblock or perharps skyblock and maybe Tycoon?.",
+        "The Alternative World Minecraft Server is a custom-built server designed to provide a unique and engaging experience for all players. We offer various features, and events to ensure that both new and seasoned players have an enjoyable time. Our server supports cross-play between Java and Bedrock editions, so everyone can join in the fun.",
+    },
+    {
+      question: "Can Java and Bedrock players play together?",
+      answer:
+        "Yes, our server supports cross-play, allowing both Java and Bedrock edition players to play together seamlessly. Whether you’re using a PC, console, or mobile device, you can connect to the server and enjoy the same world with your friends, regardless of the edition.",
+    },
+    {
+      question: "How do I get support if I encounter an issue?",
+      answer:
+        "If you encounter any issues, you can reach out to our support team through our Discord server in the #support-request channel or contact a staff member directly. We strive to respond quickly to resolve any problems.",
+    },
+    {
+      question: "Are there any in-game purchases or donations?",
+      answer:
+        "Yes, we offer a variety of in-game purchases and donation options that support the server’s maintenance and development. Players can purchase ranks, items, or cosmetics, and donations are greatly appreciated, coming with special perks as a thank you for supporting our community.",
     },
   ];
 

@@ -1,11 +1,5 @@
 import { motion } from "framer-motion";
-import {
-  MessageSquareX,
-  ShieldAlert,
-  Bug,
-  MessageSquare,
-  Hammer,
-} from "lucide-react";
+import { Users, ShieldCheck, Ban, MessageCircle, UserCog } from "lucide-react";
 
 interface RuleItemProps {
   icon: React.ReactNode;
@@ -34,30 +28,34 @@ const RuleItem: React.FC<RuleItemProps> = ({ icon, title, description }) => {
 const Rules = () => {
   const rules = [
     {
-      icon: <MessageSquareX className="w-6 h-6 text-neutral-900" />,
-      title: "No Swearing",
-      description: "Jangan Toxic ya dek",
-    },
-    {
-      icon: <ShieldAlert className="w-6 h-6 text-neutral-900" />,
-      title: "No Cheating",
-      description: "Yang pake cheat anak haram",
-    },
-    {
-      icon: <Bug className="w-6 h-6 text-neutral-900" />,
-      title: "Exploiting Bug",
+      icon: <Users className="w-6 h-6 text-neutral-900" />,
+      title: "Be Respectful",
       description:
-        "Yang nemu bug terus di salah gunakan dan tidak report sama kek orang cheating alias anak haram",
+        "Treat all players and staff with respect. No harassment, hate speech, or bullying.",
     },
     {
-      icon: <MessageSquare className="w-6 h-6 text-neutral-900" />,
-      title: "No Spamming",
-      description: "Jangan spam keyboard warrior",
+      icon: <ShieldCheck className="w-6 h-6 text-neutral-900" />,
+      title: "No Griefing",
+      description:
+        "Do not destroy or alter other players' builds without permission.",
     },
     {
-      icon: <Hammer className="w-6 h-6 text-neutral-900" />,
-      title: "No Grieffing",
-      description: "Grieffing dalam bentuk apapun di larang ya dek",
+      icon: <Ban className="w-6 h-6 text-neutral-900" />,
+      title: "No Cheating or Hacking",
+      description:
+        "Using mods, hacks, or exploits to gain an unfair advantage is strictly prohibited.",
+    },
+    {
+      icon: <MessageCircle className="w-6 h-6 text-neutral-900" />,
+      title: "Keep Chat Clean",
+      description:
+        "Avoid inappropriate language, spamming, and advertising other servers.",
+    },
+    {
+      icon: <UserCog className="w-6 h-6 text-neutral-900" />,
+      title: "Follow Staff Instructions",
+      description:
+        "Always listen to and respect the decisions made by the server staff.",
     },
   ];
 
