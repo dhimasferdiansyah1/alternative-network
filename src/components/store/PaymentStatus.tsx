@@ -1,3 +1,4 @@
+// @/app/src/components/store/PaymentStatus.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";

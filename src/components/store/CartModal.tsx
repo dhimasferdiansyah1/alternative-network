@@ -1,4 +1,4 @@
-// components/CartModal.jsx
+// @a/components/store/CartModal
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trash } from "lucide-react";
@@ -72,81 +72,108 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-    setIsCheckingUsername(true);
-    setUsernameValid(null);
+    // Periksa status Cracked dari localStorage
+    const isCracked = localStorage.getItem("isCracked") === "true";
+
+    // Jika bukan akun Cracked, lakukan pengecekan username
+    if (!isCracked) {
+      setIsCheckingUsername(true);
+      setUsernameValid(null);
+      setCheckoutError(null);
+
+      try {
+        // Validasi username Minecraft
+        const validationResponse = await fetch(
+          `/api/check-minecraft-username?username=${encodeURIComponent(
+            username
+          )}`
+        );
+
+        if (!validationResponse.ok) {
+          const errorData = await validationResponse.json();
+          throw new Error(errorData.error || "Invalid username.");
+        }
+
+        const validationData = await validationResponse.json();
+        if (validationData && !validationData.error) {
+          setUsernameValid(true);
+          await processCheckout();
+        }
+      } catch (error) {
+        console.error("Checkout error:", error);
+        if (error instanceof Error) {
+          setUsernameValid(false);
+          setCheckoutError(
+            error.message || "An error occurred during checkout."
+          );
+        } else {
+          setCheckoutError("An unknown error occurred during checkout");
+        }
+      } finally {
+        setIsCheckingUsername(false);
+      }
+    } else {
+      // Jika akun Cracked, langsung proses checkout
+      await processCheckout();
+    }
+  };
+
+  // Ekstrak logika checkout ke fungsi terpisah
+  const processCheckout = async () => {
+    setIsProcessingPayment(true);
     setCheckoutError(null);
 
     try {
-      // Validasi username Minecraft
-      const validationResponse = await fetch(
-        `/api/check-minecraft-username?username=${encodeURIComponent(username)}`
-      );
+      const orderId = "ORDER-" + Date.now();
 
-      if (!validationResponse.ok) {
-        const errorData = await validationResponse.json();
-        throw new Error(errorData.error || "Invalid username.");
+      // Simpan item yang dipilih ke localStorage
+      localStorage.setItem(
+        "selectedItems",
+        JSON.stringify(
+          cartItems.map((item) => ({
+            ...item,
+            quantity: item.quantity,
+          }))
+        )
+      );
+      localStorage.setItem("orderId", orderId);
+
+      const response = await fetch("/api/create-transaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId,
+          username,
+          items: cartItems.map((item) => ({
+            id: item.id,
+            price: item.price,
+            quantity: item.quantity,
+            name: item.name,
+          })),
+        }),
+      });
+
+      const paymentData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(paymentData.error || "Failed to create payment");
       }
 
-      const validationData = await validationResponse.json();
-      if (validationData && !validationData.error) {
-        setUsernameValid(true);
-
-        // Proses pembayaran Midtrans
-        setIsProcessingPayment(true);
-
-        const orderId = "ORDER-" + Date.now();
-
-        // Simpan item yang dipilih ke localStorage
-        localStorage.setItem(
-          "selectedItems",
-          JSON.stringify(
-            cartItems.map((item) => ({
-              ...item,
-              quantity: item.quantity,
-            }))
-          )
-        );
-        localStorage.setItem("orderId", orderId);
-
-        const response = await fetch("/api/create-transaction", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            orderId,
-            username,
-            items: cartItems.map((item) => ({
-              id: item.id,
-              price: item.price,
-              quantity: item.quantity,
-              name: item.name,
-            })),
-          }),
-        });
-
-        const paymentData = await response.json();
-
-        if (!response.ok) {
-          throw new Error(paymentData.error || "Failed to create payment");
-        }
-
-        if (paymentData.redirect_url) {
-          window.location.href = paymentData.redirect_url;
-        } else {
-          throw new Error("Failed to get payment URL");
-        }
+      if (paymentData.redirect_url) {
+        window.location.href = paymentData.redirect_url;
+      } else {
+        throw new Error("Failed to get payment URL");
       }
     } catch (error) {
       console.error("Checkout error:", error);
       if (error instanceof Error) {
-        setUsernameValid(false);
         setCheckoutError(error.message || "An error occurred during checkout.");
       } else {
         setCheckoutError("An unknown error occurred during checkout");
       }
     } finally {
-      setIsCheckingUsername(false);
       setIsProcessingPayment(false);
     }
   };

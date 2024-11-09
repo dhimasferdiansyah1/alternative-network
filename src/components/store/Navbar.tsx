@@ -43,6 +43,9 @@ const Navbar: React.FC<StoreNavbarProps> = ({ onOpenLogin }) => {
   const handleLogout = () => {
     setUsername(null);
     localStorage.removeItem("username");
+
+    // Hapus status is cracked
+    localStorage.removeItem("isCracked");
   };
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Server } from "lucide-react";
 import UsernameContext from "@/context/Username";
 import { useRouter } from "next/navigation";
 
@@ -16,6 +16,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined
   );
+  const [isCracked, setIsCracked] = useState(false);
   const { setUsername } = useContext(UsernameContext);
   const [inputUsername, setInputUsername] = useState("");
   const [usernameInputError, setUsernameInputError] = useState("");
@@ -54,16 +55,23 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     }
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selectedOption && inputUsername && !usernameInputError) {
+      // Set username in localStorage
       localStorage.setItem("username", inputUsername);
+      localStorage.setItem("isCracked", JSON.stringify(isCracked));
+
+      // Set username in context
       setUsername(inputUsername);
+
+      // Close modal and refresh
       onClose();
       router.refresh();
     }
   };
 
-  const isSecondModalValid = selectedOption && inputUsername;
+  const isSecondModalValid =
+    selectedOption && inputUsername && (isCracked || true);
 
   const closeModal = () => {
     if (modalStage === 0) {
@@ -248,6 +256,35 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
                 {usernameInputError && (
                   <p className="text-red-500 text-sm mt-4">
                     {usernameInputError}
+                  </p>
+                )}
+              </div>
+
+              {/* Cracked Account Option */}
+              <div className="mb-4">
+                <div
+                  onClick={() => setIsCracked(!isCracked)}
+                  className="flex items-center cursor-pointer"
+                >
+                  <div
+                    className={`w-6 h-6 mr-2 rounded border-2 flex items-center justify-center 
+                    ${
+                      isCracked
+                        ? "bg-yellow-400 border-yellow-500"
+                        : "bg-neutral-700 border-neutral-600"
+                    }`}
+                  >
+                    {isCracked && (
+                      <Server className="w-4 h-4 text-neutral-800" />
+                    )}
+                  </div>
+                  <span className="text-white">
+                    I&apos;m using a Cracked Minecraft Account
+                  </span>
+                </div>
+                {isCracked && (
+                  <p className="text-yellow-500 text-sm mt-2">
+                    ⚠️ You are using a cracked account
                   </p>
                 )}
               </div>
