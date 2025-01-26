@@ -8,8 +8,6 @@ import UsernameContext from "@/context/Username";
 import LoginModal from "@/components/store/LoginModal";
 import { motion } from "framer-motion";
 import { CartContext, CartItems } from "@/context/Cart";
-import Link from "next/link";
-import { HelpCircle, Sparkles } from "lucide-react";
 
 export default function Store() {
   const [cartItems, setCartItems] = useState<CartItems[]>([]);
@@ -240,12 +238,6 @@ export default function Store() {
             updateCartItems={handleUpdateCartItemQuantity}
           />
 
-          {/* Badge beta version app */}
-          <div className="brightness-125 flex text-sm items-center gap-2 bg-gradient-to-l from-purple-500 via-fuchsia-600 to-pink-700 rounded-full text-white px-4 py-1.5 mb-4">
-            Tahap Uji Coba
-            <Sparkles size={24} />
-          </div>
-
           <div className="mb-4 flex justify-between items-center px-4 sm:px-10 w-full">
             <h1 className="text-3xl font-bold text-white text-center w-full">
               Alternative World Store
@@ -279,12 +271,12 @@ export default function Store() {
           </div>
 
           {/* How To Buy Section */}
-          <Link
+          {/* <Link
             href="/store/how-to-buy"
             className="flex items-center gap-2 text-white bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded-md"
           >
             Baca tahapan cara membeli (Uji Coba) <HelpCircle size={24} />
-          </Link>
+          </Link> */}
 
           {/* Alt Coins Group */}
           <div className="w-full px-4 sm:px-10">
