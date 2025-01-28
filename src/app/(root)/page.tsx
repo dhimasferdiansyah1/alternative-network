@@ -145,8 +145,9 @@ export default function LandingPage() {
                 </span>
               </div>
             </motion.div>
-            <motion.button
-              className="flex gap-2 items-center bg-amber-400 hover:brightness-105 text-neutral-900 duration-150 px-6 py-3 rounded-full text-lg font-semibold"
+            <motion.a
+              href="https://dsc.gg/altw"
+              className="flex gap-2 w-fit items-center bg-amber-400 hover:brightness-105 text-neutral-900 duration-150 px-6 py-3 rounded-full text-lg font-semibold"
               variants={buttonVariants}
             >
               <Image
@@ -156,7 +157,7 @@ export default function LandingPage() {
                 height={24}
               />
               Discord Server
-            </motion.button>
+            </motion.a>
           </motion.div>
           <motion.div
             className="basis-1/2 flex justify-end"
@@ -368,8 +369,9 @@ export default function LandingPage() {
             >
               Join our Discord Server
             </motion.h2>
-            <motion.button
-              className="bg-amber-400 flex gap-2 items-center hover:brightness-105 text-neutral-900 px-8 py-4 rounded-full text-xl font-semibold transition duration-300"
+            <motion.a
+              href="https://dsc.gg/altw"
+              className="bg-amber-400 w-fit flex gap-2 items-center hover:brightness-105 text-neutral-900 px-8 py-4 rounded-full text-xl font-semibold transition duration-300"
               variants={buttonVariants}
             >
               <Image
@@ -379,7 +381,7 @@ export default function LandingPage() {
                 height={32}
               />
               Discord Server
-            </motion.button>
+            </motion.a>
           </div>
         </motion.section>
       </div>
