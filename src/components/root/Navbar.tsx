@@ -104,28 +104,28 @@ export default function Navbar() {
               </Link>
               <Link
                 onClick={closeMenu}
-                href="#section-3"
+                href="#how-to-join"
                 className="text-white hover:text-gray-300"
               >
                 How to join
               </Link>
               <Link
                 onClick={closeMenu}
-                href="#section-4"
+                href="#discord"
                 className="text-white hover:text-gray-300"
               >
                 Discord
               </Link>
               <Link
                 onClick={closeMenu}
-                href="#section-5"
+                href="#faq"
                 className="text-white hover:text-gray-300"
               >
                 FAQ
               </Link>
               <Link
                 onClick={closeMenu}
-                href="#section-6"
+                href="#rules"
                 className="text-white hover:text-gray-300"
               >
                 Rules
