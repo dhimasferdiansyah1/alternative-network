@@ -51,19 +51,22 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link href="#section-2" className="text-white hover:text-gray-300">
+          <Link
+            href="#what-is-alternative-world"
+            className="text-white hover:text-gray-300"
+          >
             What is Alternative World
           </Link>
-          <Link href="#section-3" className="text-white hover:text-gray-300">
+          <Link href="#how-to-join" className="text-white hover:text-gray-300">
             How to join
           </Link>
-          <Link href="#section-4" className="text-white hover:text-gray-300">
+          <Link href="#discord" className="text-white hover:text-gray-300">
             Discord
           </Link>
-          <Link href="#section-5" className="text-white hover:text-gray-300">
+          <Link href="#faq" className="text-white hover:text-gray-300">
             FAQ
           </Link>
-          <Link href="#section-6" className="text-white hover:text-gray-300">
+          <Link href="#rules" className="text-white hover:text-gray-300">
             Rules
           </Link>
           <Link

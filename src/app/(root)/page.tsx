@@ -178,7 +178,7 @@ export default function LandingPage() {
 
       <motion.section
         className="py-16 bg-neutral-900"
-        id="section-2"
+        id="what-is-alternative-world"
         ref={sectionRef}
         initial="hidden"
         animate={sectionInView ? "visible" : "hidden"}
@@ -256,7 +256,7 @@ export default function LandingPage() {
       </motion.section>
 
       <motion.section
-        id="section-3"
+        id="how-to-join"
         className="relative py-16 bg-cover bg-center bg-fixed"
         style={{ backgroundImage: "url('/wallpaperwebsite2.jpg')" }}
         ref={howToJoinRef}
@@ -361,7 +361,7 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-black bg-opacity-50" />
           <div
             className="container mx-auto w-full px-4 py-16 relative h-full flex flex-col items-center justify-center"
-            id="section-4"
+            id="discord"
           >
             <motion.h2
               className="text-6xl font-bold mb-8 text-white text-center"
@@ -386,7 +386,7 @@ export default function LandingPage() {
         </motion.section>
       </div>
 
-      <div className="bg-neutral-900 text-white" id="section-5">
+      <div className="bg-neutral-900 text-white" id="faq">
         <motion.section
           className="py-16 bg-neutral-900"
           ref={faqRef}
@@ -408,7 +408,7 @@ export default function LandingPage() {
         </motion.section>
       </div>
 
-      <section id="section-6" className="py-16 bg-neutral-900">
+      <section id="rules" className="py-16 bg-neutral-900">
         <div className=" mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-amber-400  px-4 sm:px-10">
             Server Rules
