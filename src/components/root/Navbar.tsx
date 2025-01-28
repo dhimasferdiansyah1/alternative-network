@@ -97,7 +97,7 @@ export default function Navbar() {
             <div className="flex flex-col items-center space-y-4 py-4">
               <Link
                 onClick={closeMenu}
-                href="#section-1"
+                href="#what-is-alternative-world"
                 className="text-white hover:text-gray-300"
               >
                 What is Alternative World
